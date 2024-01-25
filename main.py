@@ -1,8 +1,9 @@
+import os
 from tkinter import *
 from tkinter import ttk, messagebox, simpledialog
 
 import pandas as pd
-from tkcalendar import DateEntry  # Import DateEntry from tkcalendar
+from tkcalendar import DateEntry
 
 from api_calls import get_all_schedules, get_active_employees
 from export_to_pdf import export_to_pdf
@@ -35,6 +36,15 @@ def generate_reports_clicked():
     merged_df = pd.merge(today_schedule, active_employees, on='unique', how='inner')
 
     process_job_data(merged_df, selected_date_option, jobs_manager)
+
+    # Show pop-up message
+    messagebox.showinfo("Reports Generated",
+                        "Reports have been generated successfully! \n Please check Schedules folder.")
+
+def open_schedule_directory():
+    schedule_directory = os.path.join(os.getcwd(), 'schedules')
+    os.makedirs(schedule_directory, exist_ok=True)
+    os.startfile(schedule_directory)
 
 def show_jobs():
     global delete_button
@@ -71,7 +81,7 @@ def add_job():
         job_name = simpledialog.askstring("Job Name", "Add Job Name")
         if job_name:
             jobs_manager.add_job(job_code, job_name)
-            messagebox.showinfo('Success')
+            messagebox.showinfo('Success', 'Job Added.')
             # Trigger a refresh after adding a job
             refresh_job_list()
 
@@ -138,6 +148,10 @@ generate_reports_button.grid(row=1, column=1, columnspan=2, pady=5)
 # Button to add jobs
 add_job_button = ttk.Button(control_frame, text='Add Job', command=add_job)
 add_job_button.grid(row=2, column=1, pady=5, sticky=W)
+
+# Button to open schedule directory
+open_directory_button = ttk.Button(control_frame, text='View Schedule', command=open_schedule_directory)
+open_directory_button.grid(row=3, column=1, pady=5,  sticky=W)
 
 # Start the Tkinter event loop
 root.mainloop()
