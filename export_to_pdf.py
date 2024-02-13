@@ -1,6 +1,7 @@
-from fpdf import FPDF
-import pandas as pd
 import os
+
+import pandas as pd
+from fpdf import FPDF
 
 
 def export_to_pdf(df, filename, selected_date_option):

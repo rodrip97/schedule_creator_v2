@@ -21,3 +21,9 @@ media/*
 .csv
 cache_data/*
 *.pdf
+dist/
+output
+test.spec
+main.spec
+build/
+/build
